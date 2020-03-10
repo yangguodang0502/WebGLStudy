@@ -2,26 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Load Shaders From Dom</title>
-        <script id="shader-vs" type="x-shader/x-vertex">
-            attribute vec3 aVertexPosition;
-
-            void main() {
-                gl_Position = vec4(aVertexPosition, 1.0);
-            }
-        </script>
-        <script id="shader-fs" type="x-shader/x-fragment">
-            precision mediump float;
-
-            void main() {
-                gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-            }
-        </script>
-        <script src="js/webgl-debug.js"></script>
-        <script src="js/webgl-main.js" type="text/javascript"></script>
+        <title>WebGL Study</title>
     </head>
 
-    <body onload="startup();">
-        <canvas id="GLCanvas" width="500" height="500"></canvas>
+    <body">
+        <a href="html/Load Shaders From Dom.html">Load Shaders From Dom</a><br>
+        <a href="html/Interleaved vertex data.html">Interleaved vertex data</a>
     </body>
 </html>
