@@ -95,16 +95,43 @@ function setupBuffers() {
         -0.5, -0.5, 0.0, 0, 255, 0, 255,
         0.5, -0.5, 0.0, 9, 0, 0, 255, 255
     ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.STATIC_DRAW);
-    vertexBuffer.itemSize = 3;
+
+    var nbrOfVertices = 3;
+    var vertexSizeInBytes = 3 * Float32Array.BYTES_PER_ELEMENT + 4 * Uint8Array.BYTES_PER_ELEMENT;
+    var vertexSizeInFloat = vertexSizeInBytes / Float32Array.BYTES_PER_ELEMENT;
+    var buffer = new ArrayBuffer(nbrOfVertices * vertexSizeInBytes);
+    var positionView = new Float32Array(buffer);
+    var colorView = new Uint8Array(buffer);
+
+    var positionOffsetInFloats = 0;
+    var colorOffsetInBytes = 12;
+    var k = 0;
+    for (let i = 0; i < nbrOfVertices; i++) {
+        positionView[positionOffsetInFloats] = triangleVertices[k];
+        positionView[positionOffsetInFloats+1] = triangleVertices[k+1];
+        positionView[positionOffsetInFloats+2] = triangleVertices[k+2];
+        colorView[colorOffsetInBytes] = triangleVertices[k+3];
+        colorView[colorOffsetInBytes+1] = triangleVertices[k+4];
+        colorView[colorOffsetInBytes+2] = triangleVertices[k+5];
+        colorView[colorOffsetInBytes+3] = triangleVertices[k+6];
+
+        positionOffsetInFloats += vertexSizeInFloat;
+        colorOffsetInBytes += vertexSizeInBytes;
+        k += 7;
+    }
+
+    gl.bufferData(gl.ARRAY_BUFFER, buffer, gl.STATIC_DRAW);
+    vertexBuffer.positionSize = 3;
+    vertexBuffer.colorSize = 4;
     vertexBuffer.numberOfItems = 3;
 }
 
 function draw() {
-    gl.viewport(gl.viewportWidth / 4, gl.viewportWidth / 4, gl.viewportWidth / 2, gl.viewportHeight / 2);
+    gl.viewport(0,0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, vertexBuffer.positionSize, gl.FLOAT, false, 16, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, vertexBuffer.colorSize, gl.UNSIGNED_BYTE, true, 16, 12);
     gl.drawArrays(gl.TRIANGLES, 0, vertexBuffer.numberOfItems);    
 }
 
@@ -113,6 +140,6 @@ function startup() {
     gl = WebGLDebugUtils.makeDebugContext(createGLContext(canvas));
     setupShaders();
     setupBuffers();
-    gl.clearColor(0.0, 1.0, 0.0, 1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
     draw();
 }

@@ -81,6 +81,7 @@ function setupShaders() {
 
     gl.useProgram(shaderProgram);
     gl.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 }
 
 function setupBuffers() {
@@ -100,7 +101,6 @@ function draw() {
     gl.viewport(gl.viewportWidth / 4, gl.viewportWidth / 4, gl.viewportWidth / 2, gl.viewportHeight / 2);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
     gl.drawArrays(gl.TRIANGLES, 0, vertexBuffer.numberOfItems);    
 }
 
