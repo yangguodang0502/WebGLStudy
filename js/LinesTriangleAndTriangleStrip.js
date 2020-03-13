@@ -166,12 +166,12 @@ function setupBuffers() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, stripElementBuffer);
     var indices = [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-        10, 10, 11, // 3 extra indices for the degenerate triangles
+        10, 11, // 3 extra indices for the degenerate triangles
         11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
     ];
 
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
-    stripElementBuffer.numberOfItems = 25;
+    stripElementBuffer.numberOfItems = 24;
 }
 
 function draw() {
@@ -206,8 +206,8 @@ function draw() {
     gl.drawElements(gl.TRIANGLE_STRIP, stripElementBuffer.numberOfItems, gl.UNSIGNED_SHORT, 0);
     gl.vertexAttrib4f(shaderProgram.vertexColorAttribute, 0.0, 0.0, 0.0, 1.0);
 
-    gl.drawArrays(gl.LINE_STRIP, 0, 11);
-    gl.drawArrays(gl.LINE_STRIP, 11, 11);
+    //gl.drawArrays(gl.LINE_STRIP, 0, 11);
+    //gl.drawArrays(gl.LINE_STRIP, 11, 11);
 }
 
 function startup() {
@@ -217,9 +217,9 @@ function startup() {
     setupBuffers();
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
-    gl.frontFace(gl.CCW);
-    gl.enable(gl.CULL_FACE);
-    gl.cullFace(gl.BACK);
+    gl.frontFace(gl.CW);
+    //gl.enable(gl.CULL_FACE);
+    //gl.cullFace(gl.BACK);
 
     draw();
 }
